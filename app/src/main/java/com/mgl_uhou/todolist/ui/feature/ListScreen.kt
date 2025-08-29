@@ -27,7 +27,7 @@ import com.mgl_uhou.todolist.ui.theme.ToDoListTheme
 
 @Composable
 fun ListScreen() {
-
+    ListContent(todos = emptyList())
 }
 
 @Composable
