@@ -31,9 +31,13 @@ import com.mgl_uhou.todolist.ui.theme.grayIsCompleted
 @Composable
 fun TodoItem(
     todo: Todo,
+    onCompletedChange: (Boolean) -> Unit,
+    onItemClick: () -> Unit,
+    onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(
+        onClick = onItemClick,
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 2.dp,
@@ -46,7 +50,10 @@ fun TodoItem(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(checked = todo.isCompleted, onCheckedChange = { /*TODO: Handle onCheckedChange */ })
+            Checkbox(
+                checked = todo.isCompleted,
+                onCheckedChange = onCompletedChange
+            )
 
             Spacer(modifier = Modifier.width(8.dp))
 
@@ -75,7 +82,9 @@ fun TodoItem(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            IconButton(onClick = { /* TODO: Handle delete */ }) {
+            IconButton(
+                onClick = onDeleteClick
+            ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Delete"
@@ -89,7 +98,12 @@ fun TodoItem(
 @Composable
 private fun TodoItemPreview() {
     ToDoListTheme {
-        TodoItem(fakeTodo1)
+        TodoItem(
+            todo = fakeTodo1,
+            onCompletedChange = {},
+            onItemClick = {},
+            onDeleteClick = {}
+        )
     }
 }
 
@@ -97,6 +111,11 @@ private fun TodoItemPreview() {
 @Composable
 private fun TodoItemCompletedPreview() {
     ToDoListTheme {
-        TodoItem(fakeTodo2)
+        TodoItem(
+            todo = fakeTodo2,
+            onCompletedChange = {},
+            onItemClick = {},
+            onDeleteClick = {}
+        )
     }
 }
