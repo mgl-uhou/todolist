@@ -23,15 +23,23 @@ import com.mgl_uhou.todolist.ui.components.ToDoItem
 import com.mgl_uhou.todolist.ui.theme.ToDoListTheme
 
 @Composable
-fun ListScreen() {
-    ListContent(todos = emptyList())
+fun ListScreen(
+    navigateToAddEditScreen: (id: Long?) -> Unit
+) {
+    ListContent(
+        todos = emptyList(),
+        onAddItemClick = navigateToAddEditScreen
+    )
 }
 
 @Composable
-fun ListContent(todos: List<ToDo>) {
+fun ListContent(
+    todos: List<ToDo>,
+    onAddItemClick: (id: Long?) -> Unit
+) {
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { }) {
+            FloatingActionButton(onClick = { onAddItemClick(null) }) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
         }
@@ -64,6 +72,6 @@ private fun ListContentPreview() {
             fakeTodo1,
             fakeTodo2,
             fakeTodo3
-        ))
+        ), onAddItemClick = {})
     }
 }

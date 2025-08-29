@@ -23,7 +23,11 @@ fun ToDoNavHost() {
         startDestination = ListRoute
     ) {
         composable<ListRoute> {
-            ListScreen()
+            ListScreen(
+                navigateToAddEditScreen = { id ->
+                    navController.navigate(AddEditRoute(id))
+                }
+            )
         }
 
         composable<AddEditRoute> { backStackEntry ->
