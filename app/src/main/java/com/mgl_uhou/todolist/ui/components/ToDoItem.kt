@@ -18,19 +18,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color // Adicionado para Color.Unspecified
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mgl_uhou.todolist.domain.Todo
+import com.mgl_uhou.todolist.domain.ToDo
 import com.mgl_uhou.todolist.domain.fakeTodo1
 import com.mgl_uhou.todolist.domain.fakeTodo2
 import com.mgl_uhou.todolist.ui.theme.ToDoListTheme
 import com.mgl_uhou.todolist.ui.theme.grayIsCompleted
 
 @Composable
-fun TodoItem(
-    todo: Todo,
+fun ToDoItem(
+    todo: ToDo,
     onCompletedChange: (Boolean) -> Unit,
     onItemClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -98,7 +98,7 @@ fun TodoItem(
 @Composable
 private fun TodoItemPreview() {
     ToDoListTheme {
-        TodoItem(
+        ToDoItem(
             todo = fakeTodo1,
             onCompletedChange = {},
             onItemClick = {},
@@ -111,7 +111,7 @@ private fun TodoItemPreview() {
 @Composable
 private fun TodoItemCompletedPreview() {
     ToDoListTheme {
-        TodoItem(
+        ToDoItem(
             todo = fakeTodo2,
             onCompletedChange = {},
             onItemClick = {},
