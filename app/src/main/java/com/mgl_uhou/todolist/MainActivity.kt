@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.mgl_uhou.todolist.navigation.TodoNavHost
+import com.mgl_uhou.todolist.navigation.ToDoNavHost
 import com.mgl_uhou.todolist.ui.theme.ToDoListTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ToDoListTheme {
-                TodoNavHost()
+                ToDoNavHost()
             }
         }
     }
