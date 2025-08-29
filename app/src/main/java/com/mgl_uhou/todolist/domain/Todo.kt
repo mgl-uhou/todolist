@@ -11,7 +11,7 @@ data class Todo(
 val fakeTodo1 = Todo(
     id = 1,
     title = "Title 1",
-    description = "Description",
+    description = "Description 1",
     isCompleted = false
 )
 

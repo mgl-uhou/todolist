@@ -18,12 +18,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color // Adicionado para Color.Unspecified
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mgl_uhou.todolist.domain.Todo
+import com.mgl_uhou.todolist.domain.fakeTodo1
+import com.mgl_uhou.todolist.domain.fakeTodo2
 import com.mgl_uhou.todolist.ui.theme.ToDoListTheme
+import com.mgl_uhou.todolist.ui.theme.grayIsCompleted
 
 @Composable
-fun TodoItem(modifier: Modifier = Modifier) {
+fun TodoItem(
+    todo: Todo,
+    modifier: Modifier = Modifier
+) {
     Surface(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
@@ -37,21 +46,36 @@ fun TodoItem(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(checked = false, onCheckedChange = {})
+            Checkbox(checked = todo.isCompleted, onCheckedChange = { /*TODO: Handle onCheckedChange */ })
 
             Spacer(modifier = Modifier.width(8.dp))
 
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = "Title")
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Description")
+                Text(
+                    text = todo.title,
+                    color = if (todo.isCompleted) grayIsCompleted else Color.Unspecified,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        textDecoration = if (todo.isCompleted) TextDecoration.LineThrough else TextDecoration.None
+                    )
+                )
+
+                todo.description?.let { description ->
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = description,
+                        color = if (todo.isCompleted) grayIsCompleted else Color.Unspecified,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            textDecoration = if (todo.isCompleted) TextDecoration.LineThrough else TextDecoration.None
+                        )
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            IconButton(onClick = { }) {
+            IconButton(onClick = { /* TODO: Handle delete */ }) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Delete"
@@ -65,6 +89,14 @@ fun TodoItem(modifier: Modifier = Modifier) {
 @Composable
 private fun TodoItemPreview() {
     ToDoListTheme {
-        TodoItem()
+        TodoItem(fakeTodo1)
+    }
+}
+
+@Preview
+@Composable
+private fun TodoItemCompletedPreview() {
+    ToDoListTheme {
+        TodoItem(fakeTodo2)
     }
 }
