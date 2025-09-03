@@ -42,7 +42,7 @@ class ToDoRepositoryImpl(
     }
 }
 
-fun toDoReturn(entity: ToDoEntity): ToDo{
+private fun toDoReturn(entity: ToDoEntity): ToDo{
     return ToDo(
         id = entity.id,
         title = entity.title,
