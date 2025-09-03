@@ -10,20 +10,30 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.mgl_uhou.todolist.ui.feature.AddEditScreen
+import com.mgl_uhou.todolist.data.ToDoDatabaseProvider
+import com.mgl_uhou.todolist.data.ToDoRepositoryImpl
+import com.mgl_uhou.todolist.ui.UIEvent
+import com.mgl_uhou.todolist.ui.feature.addedit.AddEditScreen
 import com.mgl_uhou.todolist.ui.feature.ListScreen
+import com.mgl_uhou.todolist.ui.feature.addedit.AddEditEvent
+import com.mgl_uhou.todolist.ui.feature.addedit.AddEditViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -36,6 +46,9 @@ data class AddEditRoute(val id: Long? = null)
 fun ToDoNavHost() {
     val navController = rememberNavController()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -45,6 +58,9 @@ fun ToDoNavHost() {
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
+        snackbarHost = {
+            SnackbarHost(snackbarHostState)
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = fabOnClick
@@ -89,9 +105,39 @@ fun ToDoNavHost() {
             composable<AddEditRoute> { backStackEntry ->
                 val addEditRoute = backStackEntry.toRoute<AddEditRoute>()
 
-                // TODO: Chamar o método de salvamento
-                //LaunchedEffect(/*Método de salvamento*/) { fabOnClick({/*método.saveToDo()*/, navController.popBackStack()}) }}) }
-                AddEditScreen()
+                val context = LocalContext.current.applicationContext
+                val database = ToDoDatabaseProvider.provide(context)
+                val repository = ToDoRepositoryImpl( dao = database.toDoDao )
+                val viewModel = viewModel<AddEditViewModel> {
+                    AddEditViewModel(repository = repository)
+                }
+
+                LaunchedEffect(Unit) {
+                    viewModel.uiEvent.collect { event ->
+                        when(event) {
+                            is UIEvent.ShowSnackbar -> {
+                                snackbarHostState.showSnackbar(
+                                    message = event.message
+                                )
+                            }
+                            UIEvent.NavigateBack -> {
+                                navController.popBackStack()
+                            }
+                            is UIEvent.Navigate<*> -> {
+
+                            }                        }
+                    }
+                }
+
+                LaunchedEffect(viewModel) {
+                    fabOnClick = {
+                        viewModel.onEvent(AddEditEvent.Save)
+                    }
+                }
+                AddEditScreen(
+                    todoId = addEditRoute.id,
+                    viewModel = viewModel,
+                )
             }
         }
     }

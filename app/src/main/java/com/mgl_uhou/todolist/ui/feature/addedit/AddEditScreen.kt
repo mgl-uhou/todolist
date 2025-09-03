@@ -1,40 +1,62 @@
-package com.mgl_uhou.todolist.ui.feature
+package com.mgl_uhou.todolist.ui.feature.addedit
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mgl_uhou.todolist.data.ToDoDatabaseProvider
+import com.mgl_uhou.todolist.data.ToDoRepositoryImpl
+import com.mgl_uhou.todolist.ui.UIEvent
 import com.mgl_uhou.todolist.ui.theme.ToDoListTheme
 
+//val onEvent = viewModel::onEvent
+/* fun viewModel() {
+    val context = LocalContext.current.applicationContext
+    val database = ToDoDatabaseProvider.provide(context)
+    val repository = ToDoRepositoryImpl(
+        dao = database.toDoDao
+    )
+    val viewModel = viewModel<AddEditViewModel> {
+        AddEditViewModel(
+            repository = repository
+        )
+    }
+    return viewModel
+} */
+
 @Composable
-fun AddEditScreen() {
+fun AddEditScreen(
+    todoId: Long?,
+    viewModel: AddEditViewModel,
+) {
+    val title = viewModel.title
+    val description = viewModel.description
+
    AddEditContent(
-       todoId = null,
-       navigateBack = {},
+       title = title,
+       description = description,
+       onEvent = viewModel::onEvent,
        modifier = Modifier
    )
 }
 
 @Composable
 fun AddEditContent(
-    todoId: Long? = null,
-    navigateBack: () -> Unit,
+    title: String,
+    description: String?,
+    onEvent: (AddEditEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -45,8 +67,10 @@ fun AddEditContent(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            value = "",
-            onValueChange = {},
+            value = title,
+            onValueChange = {
+                onEvent(AddEditEvent.TitleChanged(it))
+            },
             placeholder = {
                 Text(
                     text = "Title",
@@ -60,8 +84,10 @@ fun AddEditContent(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            value = "",
-            onValueChange = {},
+            value = description ?: "",
+            onValueChange = {
+                onEvent(AddEditEvent.DescriptionChanged(it))
+            },
             placeholder = {
                 Text(
                     text = "Description (optional)",
@@ -78,8 +104,9 @@ fun AddEditContent(
 private fun AddEditContentPreview() {
     ToDoListTheme {
         AddEditContent(
-            todoId = null,
-            navigateBack = {},
+            description = null,
+            title = "",
+            onEvent = {},
             modifier = Modifier
         )
     }
