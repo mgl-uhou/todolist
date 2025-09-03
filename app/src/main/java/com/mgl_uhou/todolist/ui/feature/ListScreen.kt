@@ -28,24 +28,19 @@ fun ListScreen(
 ) {
     ListContent(
         todos = emptyList(),
-        onAddItemClick = navigateToAddEditScreen
+        onAddItemClick = navigateToAddEditScreen,
+        navigateToAddEditScreen = navigateToAddEditScreen
     )
 }
 
 @Composable
 fun ListContent(
     todos: List<ToDo>,
-    onAddItemClick: (id: Long?) -> Unit
+    onAddItemClick: (id: Long?) -> Unit,
+    navigateToAddEditScreen: (Long?) -> Unit
 ) {
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = { onAddItemClick(null) }) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
-            }
-        }
-    ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier.consumeWindowInsets(innerPadding),
+            modifier = Modifier,
             contentPadding = PaddingValues(16.dp)
         ) {
             itemsIndexed(items = todos){ index, todo ->
@@ -60,8 +55,6 @@ fun ListContent(
                     Spacer(modifier = Modifier.height(16.dp))
             }
         }
-
-    }
 }
 
 @Preview
@@ -72,6 +65,6 @@ private fun ListContentPreview() {
             fakeTodo1,
             fakeTodo2,
             fakeTodo3
-        ), onAddItemClick = {})
+        ), onAddItemClick = {}, navigateToAddEditScreen = {})
     }
 }

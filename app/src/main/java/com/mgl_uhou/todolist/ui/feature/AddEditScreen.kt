@@ -3,6 +3,7 @@ package com.mgl_uhou.todolist.ui.feature
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,52 +24,52 @@ import com.mgl_uhou.todolist.ui.theme.ToDoListTheme
 
 @Composable
 fun AddEditScreen() {
-   AddEditContent()
+   AddEditContent(
+       todoId = null,
+       navigateBack = {},
+       modifier = Modifier
+   )
 }
 
 @Composable
-fun AddEditContent() {
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = { }) {
-                Icon(Icons.Default.Check, contentDescription = "Save")
-            }
-        }
-    ) { innerPadding ->
-        Column(
+fun AddEditContent(
+    todoId: Long? = null,
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        OutlinedTextField(
             modifier = Modifier
-                .consumeWindowInsets(innerPadding)
-                .padding(16.dp)
-        ) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                value = "",
-                onValueChange = {},
-                placeholder = {
-                    Text(
-                        text = "Title",
-                        style = MaterialTheme.typography.labelLarge
-                    )
-                }
-            )
+                .fillMaxWidth(),
+            value = "",
+            onValueChange = {},
+            placeholder = {
+                Text(
+                    text = "Title",
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
+        )
 
-            Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                value = "",
-                onValueChange = {},
-                placeholder = {
-                    Text(
-                        text = "Description (optional)",
-                        style = MaterialTheme.typography.labelLarge,
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            value = "",
+            onValueChange = {},
+            placeholder = {
+                Text(
+                    text = "Description (optional)",
+                    style = MaterialTheme.typography.labelLarge,
 //                        color = Color.Black
-                    )
-                }
-            )
-        }
+                )
+            }
+        )
     }
 }
 
@@ -76,6 +77,10 @@ fun AddEditContent() {
 @Composable
 private fun AddEditContentPreview() {
     ToDoListTheme {
-        AddEditContent()
+        AddEditContent(
+            todoId = null,
+            navigateBack = {},
+            modifier = Modifier
+        )
     }
 }
