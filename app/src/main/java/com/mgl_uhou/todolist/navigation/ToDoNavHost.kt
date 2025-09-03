@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,17 +46,22 @@ fun ToDoNavHost() {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
-            if(currentRoute == ListRoute::class.qualifiedName) {
-                FloatingActionButton(
-                    onClick = fabOnClick
-                ) {
-                    when(currentRoute) {
-                        ListRoute::class.qualifiedName -> {
-                            Icon(Icons.Default.Add, contentDescription = "Add New Task")
-                        }
-                        AddEditRoute::class.qualifiedName -> {
-                            Icon(Icons.Default.Check, contentDescription = "Save Task")
-                        }
+            FloatingActionButton(
+                onClick = fabOnClick
+            ) {
+                val routeName = currentRoute?.substringBefore("?")
+                when(routeName) {
+                    ListRoute::class.qualifiedName -> {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = "Add New Task"
+                        )
+                    }
+                    AddEditRoute::class.qualifiedName -> {
+                        Icon(
+                            imageVector = Icons.Filled.Done,
+                            contentDescription = "Save Task",
+                        )
                     }
                 }
             }
