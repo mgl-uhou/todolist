@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class AddEditViewModel(
+    private val id: Long? = null,
     private val repository: ToDoRepository
 ): ViewModel() {
     var title by mutableStateOf("")
@@ -22,6 +23,17 @@ class AddEditViewModel(
 
     private val _uiEvent = Channel<UIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+
+    init {
+        id?.let {
+            viewModelScope.launch {
+                repository.getBy(it)?.let { task ->
+                    title = task.title
+                    description = task.description
+                }
+            }
+        }
+    }
 
     fun onEvent(event: AddEditEvent) = when(event) {
         is AddEditEvent.TitleChanged -> {
@@ -42,7 +54,11 @@ class AddEditViewModel(
                 return@launch
             }
 
-            repository.insert(title, description)
+            repository.insert(
+                id = id,
+                title = title,
+                description = description,
+            )
             _uiEvent.send(UIEvent.NavigateBack)
         }
     }

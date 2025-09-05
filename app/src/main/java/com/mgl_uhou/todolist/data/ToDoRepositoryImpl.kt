@@ -7,8 +7,13 @@ import kotlinx.coroutines.flow.map
 class ToDoRepositoryImpl(
     private val dao: ToDoDao
 ): ToDoRepository {
-    override suspend fun insert(title: String, description: String?) {
-        val entity = ToDoEntity(
+    override suspend fun insert(id: Long?, title: String, description: String?) {
+        val entity = id?.let {
+            dao.getBy(it)?.copy(
+                title = title,
+                description = description,
+            )
+        } ?: ToDoEntity(
             title = title,
             description = description,
             isCompleted = false,

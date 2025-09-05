@@ -4,7 +4,11 @@ import com.mgl_uhou.todolist.domain.ToDo
 import kotlinx.coroutines.flow.Flow
 
 interface ToDoRepository {
-    suspend fun insert(title: String, description: String?)
+    suspend fun insert(
+        id: Long? = null,
+        title: String,
+        description: String?
+    )
     suspend fun updateCompleted(id: Long, isCompleted: Boolean)
     suspend fun delete(id: Long)
     fun getAll(): Flow<List<ToDo>>

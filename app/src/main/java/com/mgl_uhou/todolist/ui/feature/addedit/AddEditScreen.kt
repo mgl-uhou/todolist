@@ -10,35 +10,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mgl_uhou.todolist.data.ToDoDatabaseProvider
-import com.mgl_uhou.todolist.data.ToDoRepositoryImpl
-import com.mgl_uhou.todolist.ui.UIEvent
 import com.mgl_uhou.todolist.ui.theme.ToDoListTheme
-
-//val onEvent = viewModel::onEvent
-/* fun viewModel() {
-    val context = LocalContext.current.applicationContext
-    val database = ToDoDatabaseProvider.provide(context)
-    val repository = ToDoRepositoryImpl(
-        dao = database.toDoDao
-    )
-    val viewModel = viewModel<AddEditViewModel> {
-        AddEditViewModel(
-            repository = repository
-        )
-    }
-    return viewModel
-} */
 
 @Composable
 fun AddEditScreen(
-    todoId: Long?,
     viewModel: AddEditViewModel,
 ) {
     val title = viewModel.title
@@ -92,7 +70,6 @@ fun AddEditContent(
                 Text(
                     text = "Description (optional)",
                     style = MaterialTheme.typography.labelLarge,
-//                        color = Color.Black
                 )
             }
         )

@@ -99,22 +99,23 @@ fun ToDoNavHost() {
                     ListViewModel(repository = repository)
                 }
 
-                /* LaunchedEffect(Unit) {
+                LaunchedEffect(Unit) {
                     viewModel.uiEvent.collect { event ->
                         when(event) {
-                            is UIEvent.ShowSnackbar -> {
-                                snackbarHostState.showSnackbar(
-                                    message = event.message
-                                )
+                            is UIEvent.Navigate<*> -> {
+                                if(event.route is AddEditRoute) {
+                                    navController.navigate(AddEditRoute(event.route.id))
+                                }
                             }
+
                             UIEvent.NavigateBack -> {
                                 navController.popBackStack()
                             }
-                            is UIEvent.Navigate<*> -> {
 
-                            }                        }
+                            is UIEvent.ShowSnackbar -> {}
+                        }
                     }
-                } */
+                }
 
                 LaunchedEffect(Unit) {
                     fabOnClick = {
@@ -136,7 +137,10 @@ fun ToDoNavHost() {
                 val database = ToDoDatabaseProvider.provide(context)
                 val repository = ToDoRepositoryImpl( dao = database.toDoDao )
                 val viewModel = viewModel<AddEditViewModel> {
-                    AddEditViewModel(repository = repository)
+                    AddEditViewModel(
+                        id = addEditRoute.id,
+                        repository = repository
+                    )
                 }
 
                 LaunchedEffect(Unit) {
@@ -162,7 +166,6 @@ fun ToDoNavHost() {
                     }
                 }
                 AddEditScreen(
-                    todoId = addEditRoute.id,
                     viewModel = viewModel,
                 )
             }
