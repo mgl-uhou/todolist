@@ -20,7 +20,6 @@ import com.mgl_uhou.todolist.ui.theme.ToDoListTheme
 
 @Composable
 fun ListScreen(
-    navigateToAddEditScreen: (id: Long?) -> Unit,
     viewModel: ListViewModel
 ) {
     val todos by viewModel.todos.collectAsState()
