@@ -31,9 +31,10 @@ import com.mgl_uhou.todolist.data.ToDoDatabaseProvider
 import com.mgl_uhou.todolist.data.ToDoRepositoryImpl
 import com.mgl_uhou.todolist.ui.UIEvent
 import com.mgl_uhou.todolist.ui.feature.addedit.AddEditScreen
-import com.mgl_uhou.todolist.ui.feature.ListScreen
+import com.mgl_uhou.todolist.ui.feature.list.ListScreen
 import com.mgl_uhou.todolist.ui.feature.addedit.AddEditEvent
 import com.mgl_uhou.todolist.ui.feature.addedit.AddEditViewModel
+import com.mgl_uhou.todolist.ui.feature.list.ListViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -90,6 +91,30 @@ fun ToDoNavHost() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable<ListRoute> {
+                val context = LocalContext.current.applicationContext
+                val database = ToDoDatabaseProvider.provide(context)
+                val repository = ToDoRepositoryImpl( dao = database.toDoDao )
+                val viewModel = viewModel<ListViewModel> {
+                    ListViewModel(repository = repository)
+                }
+
+                /* LaunchedEffect(Unit) {
+                    viewModel.uiEvent.collect { event ->
+                        when(event) {
+                            is UIEvent.ShowSnackbar -> {
+                                snackbarHostState.showSnackbar(
+                                    message = event.message
+                                )
+                            }
+                            UIEvent.NavigateBack -> {
+                                navController.popBackStack()
+                            }
+                            is UIEvent.Navigate<*> -> {
+
+                            }                        }
+                    }
+                } */
+
                 LaunchedEffect(Unit) {
                     fabOnClick = {
                         navController.navigate(AddEditRoute(id = null))
@@ -98,7 +123,8 @@ fun ToDoNavHost() {
                 ListScreen(
                     navigateToAddEditScreen = { id ->
                         navController.navigate(AddEditRoute(id))
-                    }
+                    },
+                    viewModel = viewModel
                 )
             }
 

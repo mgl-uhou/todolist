@@ -1,17 +1,13 @@
-package com.mgl_uhou.todolist.ui.feature
+package com.mgl_uhou.todolist.ui.feature.list
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,10 +20,12 @@ import com.mgl_uhou.todolist.ui.theme.ToDoListTheme
 
 @Composable
 fun ListScreen(
-    navigateToAddEditScreen: (id: Long?) -> Unit
+    navigateToAddEditScreen: (id: Long?) -> Unit,
+    viewModel: ListViewModel
 ) {
+    val todos by viewModel.todos.collectAsState()
     ListContent(
-        todos = emptyList(),
+        todos = todos,
         onAddItemClick = navigateToAddEditScreen,
         navigateToAddEditScreen = navigateToAddEditScreen
     )
