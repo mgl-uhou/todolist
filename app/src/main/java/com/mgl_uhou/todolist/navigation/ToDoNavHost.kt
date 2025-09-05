@@ -34,6 +34,7 @@ import com.mgl_uhou.todolist.ui.feature.addedit.AddEditScreen
 import com.mgl_uhou.todolist.ui.feature.list.ListScreen
 import com.mgl_uhou.todolist.ui.feature.addedit.AddEditEvent
 import com.mgl_uhou.todolist.ui.feature.addedit.AddEditViewModel
+import com.mgl_uhou.todolist.ui.feature.list.ListEvent
 import com.mgl_uhou.todolist.ui.feature.list.ListViewModel
 import kotlinx.serialization.Serializable
 
@@ -117,7 +118,7 @@ fun ToDoNavHost() {
 
                 LaunchedEffect(Unit) {
                     fabOnClick = {
-                        navController.navigate(AddEditRoute(id = null))
+                        viewModel.onEvent(ListEvent.AddEdit(null))
                     }
                 }
                 ListScreen(

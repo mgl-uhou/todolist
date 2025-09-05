@@ -26,16 +26,14 @@ fun ListScreen(
     val todos by viewModel.todos.collectAsState()
     ListContent(
         todos = todos,
-        onAddItemClick = navigateToAddEditScreen,
-        navigateToAddEditScreen = navigateToAddEditScreen
+        onEvent = viewModel::onEvent,
     )
 }
 
 @Composable
 fun ListContent(
     todos: List<ToDo>,
-    onAddItemClick: (id: Long?) -> Unit,
-    navigateToAddEditScreen: (Long?) -> Unit
+    onEvent: (ListEvent) -> Unit,
 ) {
         LazyColumn(
             modifier = Modifier,
@@ -44,9 +42,15 @@ fun ListContent(
             itemsIndexed(items = todos){ index, todo ->
                 ToDoItem(
                     todo = todo,
-                    onCompletedChange = {},
-                    onItemClick = {},
-                    onDeleteClick = {}
+                    onCompletedChange = {
+                        onEvent(ListEvent.CompleteChanged(todo.id, it))
+                    },
+                    onItemClick = {
+                        onEvent(ListEvent.AddEdit(todo.id))
+                    },
+                    onDeleteClick = {
+                        onEvent(ListEvent.Delete(todo.id))
+                    }
                 )
 
                 if (index < todos.lastIndex)
@@ -63,6 +67,6 @@ private fun ListContentPreview() {
             fakeTodo1,
             fakeTodo2,
             fakeTodo3
-        ), onAddItemClick = {}, navigateToAddEditScreen = {})
+        ), onEvent = {})
     }
 }
