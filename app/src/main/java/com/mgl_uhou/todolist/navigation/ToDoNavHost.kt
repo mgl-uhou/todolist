@@ -82,7 +82,6 @@ fun ToDoNavHost() {
                 }
             }
         },
-        modifier = Modifier.fillMaxSize().systemBarsPadding(),
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -121,9 +120,6 @@ fun ToDoNavHost() {
                     }
                 }
                 ListScreen(
-                    navigateToAddEditScreen = { id ->
-                        navController.navigate(AddEditRoute(id))
-                    },
                     viewModel = viewModel
                 )
             }
