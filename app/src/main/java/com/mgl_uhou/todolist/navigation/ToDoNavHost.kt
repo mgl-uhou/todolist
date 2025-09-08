@@ -1,6 +1,7 @@
 package com.mgl_uhou.todolist.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
@@ -63,7 +64,8 @@ fun ToDoNavHost() {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = fabOnClick
+                onClick = fabOnClick,
+                modifier = Modifier.imePadding()
             ) {
                 val routeName = currentRoute?.substringBefore("?")
                 when(routeName) {
