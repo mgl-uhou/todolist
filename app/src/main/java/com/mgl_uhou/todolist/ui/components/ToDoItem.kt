@@ -70,8 +70,12 @@ fun ToDoItem(
 
                 todo.description?.let { description ->
                     Spacer(modifier = Modifier.height(8.dp))
+                    var newDescription = ""
+                    if (todo.isCompleted){
+                        newDescription = if(description.length <= 25) description else description.take(25) + "..."
+                    }
                     Text(
-                        text = description,
+                        text = if(todo.isCompleted) newDescription else description,
                         color = if (todo.isCompleted) grayIsCompleted else Color.Unspecified,
                         style = MaterialTheme.typography.bodyMedium.copy(
                             textDecoration = if (todo.isCompleted) TextDecoration.LineThrough else TextDecoration.None
