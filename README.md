@@ -1,5 +1,7 @@
 # ✅ To Do List ✅
 
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](./LICENSE)
+
 This is a simple application based on the following playlist from Douglas Motta's YouTube channel:
 
 [COMO CRIAR UM APLICATIVO ANDROID DO ZERO - TO-DO LIST APP | COMPOSE, MVVM, ROOM E REP...](https://youtube.com/playlist?list=PLPs3nlHFeKTp6tQwIuUoC248VL2aDwbqW&si=mBcNxtrNC2lWdtZg)
